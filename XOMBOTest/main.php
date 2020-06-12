@@ -39,10 +39,9 @@
     $userArray = json_decode($outputUs, true);
 
 
-    for($i = 0; $i < count($userArray); $i++)
-    {
+    for($i = 0; $i < count($userArray); $i++) {
         //Google Geocode API url
-        $mapUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=".$userArray[$i]["address"]["geo"]["lat"].",".$userArray[$i]["address"]["geo"]["lng"]."&key=AIzaSyCunoownIosjZzWw_AFr8HkVrOWjSnpeAs";
+        $mapUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" . $userArray[$i]["address"]["geo"]["lat"] . "," . $userArray[$i]["address"]["geo"]["lng"] . "&key=AIzaSyCunoownIosjZzWw_AFr8HkVrOWjSnpeAs";
 
         $chMap = curl_init();//Initialize curl for map
         curl_setopt($chMap, CURLOPT_RETURNTRANSFER, true);//Set map curl to return the result of the HTTP request
@@ -53,31 +52,35 @@
 
         $locationArray = json_decode($outputLocation, true);//Decode maps JSON into PHP array
 
-        echo '<img src="'.$imageArray[$i]["url"].'"alt=""/>';//Print image
-
+        echo '<img src="' . $imageArray[$i]["url"] . '"alt=""/>';//Print image
 
         echo '<div class="userInfo" style="padding-left: 50px; display: inline-block">';//Create text div
 
+        //User Variables
+        $userName = $userArray[$i]["name"];
+        $userId = $userArray[$i]["id"];
+        $userUsername = $userArray[$i]["username"];
+        $userEmail = $userArray[$i]["email"];
+        $userSuite = $userArray[$i]["address"]["suite"];
+        $userStreet = $userArray[$i]["address"]["street"];
+        $userCity = $userArray[$i]["address"]["city"];
+        $userZip = $userArray[$i]["address"]["zipcode"];
+        $userLocation = $locationArray["results"][0]["formatted_address"];
+
         //Print user info
-        echo "Name: ".$userArray[$i]["name"];//Name of user
-        echo "<br>User Id: ".$userArray[$i]["id"];//Id of user
-        echo "<br>Username: ".$userArray[$i]["username"];//Username of user
-        echo "<br>Email: ".$userArray[$i]["email"];//Email of user
-        echo "<br>Address: ".$userArray[$i]["address"]["suite"]." ".$userArray[$i]["address"]["street"].", ".$userArray[$i]["address"]["city"]." ".$userArray[$i]["address"]["zipcode"];//Full address of user
-        if(!empty($locationArray["results"][0]["formatted_address"]))
-        {
-            echo "<br>Current Location: ".$locationArray["results"][0]["formatted_address"];//Get name of location if coordinates are valid
-        }
-        else
-        {
+        echo "Name: " . $userName;//Name of user
+        echo "<br>User Id: " . $userId;//Id of user
+        echo "<br>Username: " . $userUsername;//Username of user
+        echo "<br>Email: " . $userEmail;//Email of user
+        echo "<br>Address: " . $userSuite . " " . $userStreet . ", " . $userCity . " " . $userZip;//Full address of user
+        if (!empty($userLocation)) {
+            echo "<br>Current Location: " . $userLocation;//Get name of location if coordinates are valid
+        } else {
             echo "<br>Current Location: No location found";//If coordinates are not valid
         }
 
-        //echo "<br>Test:".$userArray[$i]["address"]["geo"]["lat"].",".$userArray[$i]["address"]["geo"]["lng"];
-
         echo '</div>';//end div
         echo "<br>";//new line
-
     }
 ?>
 
