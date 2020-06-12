@@ -19,6 +19,7 @@
     $imageUrl = 'http://jsonplaceholder.typicode.com/photos';
     $userUrl = 'http://jsonplaceholder.typicode.com/users';
 
+
     //Get images from API
     $chIm = curl_init(); //Initialize curl for images
     curl_setopt($chIm, CURLOPT_RETURNTRANSFER, true);//Set image curl to return the result of the HTTP request
@@ -40,6 +41,18 @@
 
     for($i = 0; $i < count($userArray); $i++)
     {
+        //Google Geocode API url
+        $mapUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=".$userArray[$i]["address"]["geo"]["lat"].",".$userArray[$i]["address"]["geo"]["lng"]."&key=AIzaSyCunoownIosjZzWw_AFr8HkVrOWjSnpeAs";
+
+        $chMap = curl_init();//Initialize curl for map
+        curl_setopt($chMap, CURLOPT_RETURNTRANSFER, true);//Set map curl to return the result of the HTTP request
+        curl_setopt($chMap, CURLOPT_SSL_VERIFYPEER, false);//Stops curl from verifying the peer's certificate
+        curl_setopt($chMap, CURLOPT_URL, $mapUrl);//Set the url for the HTTP request
+        $outputLocation = curl_exec($chMap);//Execute maps request
+        curl_close($chMap);//Close map curl
+
+        $locationArray = json_decode($outputLocation, true);//Decode maps JSON into PHP array
+
         echo '<img src="'.$imageArray[$i]["url"].'"alt=""/>';//Print image
 
 
@@ -51,6 +64,16 @@
         echo "<br>Username: ".$userArray[$i]["username"];//Username of user
         echo "<br>Email: ".$userArray[$i]["email"];//Email of user
         echo "<br>Address: ".$userArray[$i]["address"]["suite"]." ".$userArray[$i]["address"]["street"].", ".$userArray[$i]["address"]["city"]." ".$userArray[$i]["address"]["zipcode"];//Full address of user
+        if(!empty($locationArray["results"][0]["formatted_address"]))
+        {
+            echo "<br>Current Location: ".$locationArray["results"][0]["formatted_address"];//Get name of location if coordinates are valid
+        }
+        else
+        {
+            echo "<br>Current Location: No location found";//If coordinates are not valid
+        }
+
+        //echo "<br>Test:".$userArray[$i]["address"]["geo"]["lat"].",".$userArray[$i]["address"]["geo"]["lng"];
 
         echo '</div>';//end div
         echo "<br>";//new line
