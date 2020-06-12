@@ -1,0 +1,27 @@
+Hello!
+
+This is my submission for the skills test for XOMBO.
+
+Description: This code will produce 10 images from a provided api, with 10 user profiles from another given API including names, emails, 
+addresses, etc to go alongside the images. This also tracks the user's location using the Google Geocoding API and the longitude and 
+latitude given in the provided user API.
+
+Work Time:
+
+June 9th
+
+1900 - 1930
+Looked at the project and downloaded the correct IDE.
+
+June 10th
+
+1400 - 1900
+Finished the minimum requirements for the project. Images from provided API loading onto an HTML webpage
+
+June 11th
+
+1720 - 1800
+Implemented the provided user API to display user data alongside the images.
+
+1830 - 1930
+Implemented the Google Geocoding API to track current location of user based on the longitude and latitude given in the user API.
